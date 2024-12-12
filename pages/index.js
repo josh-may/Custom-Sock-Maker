@@ -65,6 +65,10 @@ export default function Home() {
                 placeholder="Describe your dream sock design..."
                 className="w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               />
+              <p className="text-sm text-gray-500 italic">
+                Example: &ldquo;Generate a Star Trek custom sock and use the
+                Star Trek logo and colors on the sock.&rdquo;
+              </p>
               <div>
                 <button
                   onClick={generateSockImage}

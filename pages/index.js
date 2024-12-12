@@ -100,7 +100,7 @@ export default function Home() {
                       <span>Generating your designs...</span>
                     </span>
                   ) : (
-                    "Get Free Custom Designs"
+                    "Generator Design"
                   )}
                 </button>
               </div>

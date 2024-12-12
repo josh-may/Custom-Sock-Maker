@@ -6,6 +6,12 @@ export default function Home() {
   const [sockImages, setSockImages] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState(null);
+  const [showModal, setShowModal] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    fullName: "",
+    email: "",
+    notes: "",
+  });
 
   const generateSockImage = async () => {
     setIsLoading(true);
@@ -137,7 +143,10 @@ export default function Home() {
                         ? "border-red-500 ring-2 ring-red-500"
                         : "border-gray-200 hover:border-red-400"
                     }`}
-                    onClick={() => setSelectedImage(index)}
+                    onClick={() => {
+                      setSelectedImage(index);
+                      setShowModal(true);
+                    }}
                   >
                     <Image
                       src={image}
@@ -188,8 +197,86 @@ export default function Home() {
               </div>
             )}
           </div>
+          {/*  */}
         </div>
       </main>
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg">
+            <h3 className="text-2xl font-semibold mb-6 text-gray-900">
+              Where should we send your design?
+            </h3>
+            <form className="space-y-6">
+              <div>
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fullName: e.target.value })
+                  }
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Business Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="notes"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Notes
+                </label>
+                <textarea
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
+                  rows="3"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none resize-none text-gray-900"
+                ></textarea>
+              </div>
+              <div className="flex justify-end space-x-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2.5 text-sm font-bold rounded-lg border hover:bg-gray-50 transition-colors text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

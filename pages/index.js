@@ -151,23 +151,27 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                <div className="col-span-full bg-white rounded-lg border-2 border-gray-200 p-8">
-                  <div className="grid grid-cols-4 gap-4">
+                <div className="col-span-full">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
                       "heb.webp",
                       "facebook.webp",
                       "google.webp",
                       "slack.webp",
                     ].map((image, index) => (
-                      <div key={index} className="aspect-square relative">
+                      <div
+                        key={index}
+                        className="aspect-[4/5] bg-white rounded-lg relative border-2 border-gray-200 hover:border-red-400"
+                      >
                         <Image
                           src={`/${image}`}
                           alt={`${image
                             .split(".")[0]
                             .replace(/-/g, " ")} Socks`}
                           fill
-                          sizes="(max-width: 768px) 25vw, 25vw"
-                          className="rounded-lg object-contain p-2"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="p-3"
+                          style={{ objectFit: "contain" }}
                         />
                       </div>
                     ))}

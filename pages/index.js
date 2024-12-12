@@ -69,7 +69,11 @@ export default function Home() {
                 <button
                   onClick={generateSockImage}
                   disabled={isLoading || !prompt.trim()}
-                  className="bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-all disabled:bg-gray-200 disabled:cursor-not-allowed font-bold text-lg"
+                  className={`text-white font-bold py-3 px-6 rounded-lg transition-all ${
+                    isLoading
+                      ? "bg-gray-200 cursor-not-allowed"
+                      : "bg-red-600 hover:bg-red-700"
+                  } font-bold text-lg`}
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center space-x-2">
@@ -106,7 +110,7 @@ export default function Home() {
           {/* Results Section */}
           <div className="bg-gray-50 rounded-md shadow-sm p-6 md:p-8 border border-gray-300">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
-              Your Designs
+              Design Examples
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {isLoading ? (
@@ -147,14 +151,12 @@ export default function Home() {
                   <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">
                     Past Custom Sock Designs
                   </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-4 gap-4">
                     {[
-                      "American-University.jpg",
-                      "Aray-Lifestyle.png",
-                      "Blaquestone-LLP.png",
-                      "Bruce-Trail-Conservatory.png",
-                      "Cinchy.jpg",
-                      "Collective-Sistahood.png",
+                      "heb.webp",
+                      "facebook.webp",
+                      "google.webp",
+                      "slack.webp",
                     ].map((image, index) => (
                       <div key={index} className="aspect-square relative">
                         <Image
@@ -163,7 +165,7 @@ export default function Home() {
                             .split(".")[0]
                             .replace(/-/g, " ")} Socks`}
                           fill
-                          sizes="(max-width: 768px) 50vw, 33vw"
+                          sizes="(max-width: 768px) 25vw, 25vw"
                           className="rounded-lg object-contain p-2"
                         />
                       </div>

@@ -12,26 +12,37 @@ export default function Home() {
     setSelectedImage(null);
     setSockImages([]);
     try {
-      const promises = Array(4)
-        .fill(null)
-        .map(() =>
-          fetch("/api/dalle", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              prompt: `${prompt}
+      const prompts = [
+        `${prompt}
+        
+        Design a technical illustration style mock-up. Light, professional sketch quality on white background.`,
+        `${prompt}
+        
+        Design a technical illustration style mock-up. Light, professional sketch quality on white background.`,
 
-Keep the image simple. Make it look like a mock up. Make it 2D. Only output the sock. Use a white background. 
-`,
-            }),
-          }).then((res) => res.json())
-        );
+        `${prompt}
+        
+        Make a simple sketched mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style.`,
+        `${prompt}
+        
+        Make a simple sketched mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style.`,
+      ];
 
-      const responses = await Promise.all(promises);
-      setSockImages(responses.map((response) => response.urls[0]));
+      const imagePromises = prompts.map((promptText) =>
+        fetch("/api/fal", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: promptText }),
+        }).then((res) => res.json())
+      );
+
+      const results = await Promise.all(imagePromises);
+
+      const imageUrls = results.map((result) => result.urls[0]);
+      setSockImages(imageUrls);
       setSelectedImage(null);
     } catch (error) {
-      console.error("Error generating sock:", error);
+      console.error("Error generating socks:", error);
     } finally {
       setIsLoading(false);
     }
@@ -39,7 +50,7 @@ Keep the image simple. Make it look like a mock up. Make it 2D. Only output the 
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="max-w-5xl mx-auto px-4 py-12">
+      <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="space-y-4">
           {/* Design Input Section */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border-2 border-gray-200">
@@ -113,7 +124,7 @@ Keep the image simple. Make it look like a mock up. Make it 2D. Only output the 
                 sockImages.map((image, index) => (
                   <div
                     key={index}
-                    className={`aspect-square bg-white rounded-lg relative cursor-pointer transition-all border-2 ${
+                    className={`aspect-[4/5] bg-white rounded-lg relative cursor-pointer transition-all border-2 ${
                       selectedImage === index
                         ? "border-red-500 ring-2 ring-red-500"
                         : "border-gray-200 hover:border-red-400"
@@ -132,25 +143,34 @@ Keep the image simple. Make it look like a mock up. Make it 2D. Only output the 
                   </div>
                 ))
               ) : (
-                <div className="col-span-full aspect-[3/2] bg-gray-50 rounded-lg border-2 border-gray-200 flex flex-col items-center justify-center p-8 text-center">
-                  <svg
-                    className="w-16 h-16 mb-4 text-gray-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    />
-                  </svg>
-                  <p className="text-lg font-medium text-gray-900">
-                    Ready to create your custom socks?
-                  </p>
-                  <p className="text-gray-500 mt-2">
-                    Enter your design idea above to get started
+                <div className="col-span-full bg-gray-50 rounded-lg border-2 border-gray-200 p-8">
+                  <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">
+                    Past Custom Sock Designs
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {[
+                      "American-University.jpg",
+                      "Aray-Lifestyle.png",
+                      "Blaquestone-LLP.png",
+                      "Bruce-Trail-Conservatory.png",
+                      "Cinchy.jpg",
+                      "Collective-Sistahood.png",
+                    ].map((image, index) => (
+                      <div key={index} className="aspect-square relative">
+                        <Image
+                          src={`/${image}`}
+                          alt={`${image
+                            .split(".")[0]
+                            .replace(/-/g, " ")} Socks`}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                          className="rounded-lg object-contain p-2"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-gray-500 mt-6 text-center">
+                    Enter your design idea above to create your own custom socks
                   </p>
                 </div>
               )}

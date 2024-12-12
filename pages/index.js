@@ -49,11 +49,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="space-y-4">
           {/* Design Input Section */}
-          <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border-2 border-gray-200">
+          <div className="bg-gray-50 rounded-md shadow-sm p-6 md:p-8 border border-gray-300">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
               Design Your Custom Socks
             </h1>
@@ -104,7 +104,7 @@ export default function Home() {
           </div>
           {/*  */}
           {/* Results Section */}
-          <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 border-2 border-gray-200">
+          <div className="bg-gray-50 rounded-md shadow-sm p-6 md:p-8 border border-gray-300">
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
               Your Designs
             </h2>
@@ -113,7 +113,7 @@ export default function Home() {
                 [...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className="aspect-square bg-gray-50 rounded-lg border-2 border-gray-200 flex items-center justify-center"
+                    className="aspect-square bg-white rounded-lg border-2 border-gray-200 flex items-center justify-center"
                   >
                     <div className="animate-pulse text-gray-400 text-sm">
                       Generating...
@@ -143,7 +143,7 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                <div className="col-span-full bg-gray-50 rounded-lg border-2 border-gray-200 p-8">
+                <div className="col-span-full bg-white rounded-lg border-2 border-gray-200 p-8">
                   <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">
                     Past Custom Sock Designs
                   </h3>

@@ -55,7 +55,7 @@ export default function Home() {
           {/* Design Input Section */}
           <div className="bg-gray-50 rounded-md shadow-sm p-6 md:p-8 border border-gray-300">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
-              Design Your Custom Socks
+              Design Your Socks
             </h1>
             <div className="space-y-4">
               <input

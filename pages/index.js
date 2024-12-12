@@ -148,9 +148,6 @@ export default function Home() {
                 ))
               ) : (
                 <div className="col-span-full bg-white rounded-lg border-2 border-gray-200 p-8">
-                  <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">
-                    Past Custom Sock Designs
-                  </h3>
                   <div className="grid grid-cols-4 gap-4">
                     {[
                       "heb.webp",

@@ -20,16 +20,39 @@ export default function Home() {
 
   React.useEffect(() => {
     try {
-      const parentUrl = new URL(window.parent.location.href);
+      // Get current URL parameters
+      const url = new URL(window.location.href);
+      console.log("url");
+      console.log(url);
+
+      const parentUrl =
+        window.parent !== window ? window.parent.location.href : null;
+
+      // Try to get UTM from current URL first, then fallback to parent URL if available
+      const getUtmParam = (param) => {
+        return (
+          url.searchParams.get(param) ||
+          (parentUrl ? new URL(parentUrl).searchParams.get(param) : "") ||
+          ""
+        );
+      };
+
       setFormData((prev) => ({
         ...prev,
-        utm_source: parentUrl.searchParams.get("utm_source") || "",
-        utm_medium: parentUrl.searchParams.get("utm_medium") || "",
-        utm_campaign: parentUrl.searchParams.get("utm_campaign") || "",
+        utm_source: getUtmParam("utm_source"),
+        utm_medium: getUtmParam("utm_medium"),
+        utm_campaign: getUtmParam("utm_campaign"),
         referrer: document.referrer || "",
       }));
+
+      // Debug logging
+      console.log("Current URL:", window.location.href);
+      console.log("Parent URL:", parentUrl);
+      console.log("UTM Source:", getUtmParam("utm_source"));
+      console.log("UTM Medium:", getUtmParam("utm_medium"));
+      console.log("UTM Campaign:", getUtmParam("utm_campaign"));
     } catch (e) {
-      console.log("Unable to access parent URL parameters");
+      console.log("Unable to access URL parameters:", e);
     }
   }, []);
 

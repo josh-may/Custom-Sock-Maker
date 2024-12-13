@@ -277,8 +277,13 @@ export default function Home() {
         </div>
       </main>
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+          <div
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0.3)_50%,transparent_100%)]"
+            onClick={() => setShowModal(false)}
+          ></div>
+
+          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg relative z-10">
             <h3 className="text-2xl font-semibold mb-6 text-gray-900">
               Where should we send your design?
             </h3>

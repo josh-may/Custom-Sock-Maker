@@ -27,15 +27,23 @@ export default function Home() {
       const params = new URLSearchParams(window.location.search);
 
       setAttributionData({
-        parentUrl: params.get("parent_url") || "",
-        utmSource: params.get("utm_source") || "",
-        utmMedium: params.get("utm_medium") || "",
-        utmCampaign: params.get("utm_campaign") || "",
+        parentUrl: params.get("parent_url") || window.location.href,
+        utmSource: params.get("utm_source") || "organic",
+        utmMedium: params.get("utm_medium") || "direct",
+        utmCampaign: params.get("utm_campaign") || "none",
         utmTerm: params.get("utm_term") || "",
         utmContent: params.get("utm_content") || "",
       });
     } catch (error) {
       console.error("Error parsing URL parameters:", error);
+      setAttributionData({
+        parentUrl: window.location.href,
+        utmSource: "organic",
+        utmMedium: "direct",
+        utmCampaign: "none",
+        utmTerm: "",
+        utmContent: "",
+      });
     }
   }, []);
 

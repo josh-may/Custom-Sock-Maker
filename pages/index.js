@@ -8,10 +8,30 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [showModal, setShowModal] = React.useState(false);
   const [formData, setFormData] = React.useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     notes: "",
+    utm_source: "",
+    utm_medium: "",
+    utm_campaign: "",
+    referrer: "",
   });
+
+  React.useEffect(() => {
+    try {
+      const parentUrl = new URL(window.parent.location.href);
+      setFormData((prev) => ({
+        ...prev,
+        utm_source: parentUrl.searchParams.get("utm_source") || "",
+        utm_medium: parentUrl.searchParams.get("utm_medium") || "",
+        utm_campaign: parentUrl.searchParams.get("utm_campaign") || "",
+        referrer: document.referrer || "",
+      }));
+    } catch (e) {
+      console.log("Unable to access parent URL parameters");
+    }
+  }, []);
 
   const generateSockImage = async () => {
     setIsLoading(true);
@@ -51,6 +71,53 @@ export default function Home() {
       console.error("Error generating socks:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const zapierData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        notes: formData.notes,
+        selectedImageUrl: sockImages[selectedImage],
+        utm_source: formData.utm_source,
+        utm_medium: formData.utm_medium,
+        utm_campaign: formData.utm_campaign,
+        referrer: formData.referrer,
+        submissionDate: new Date().toISOString(),
+      };
+
+      const response = await fetch("/api/submit-design", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(zapierData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit design");
+      }
+
+      await response.json();
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        notes: "",
+        utm_source: "",
+        utm_medium: "",
+        utm_campaign: "",
+        referrer: "",
+      });
+      setShowModal(false);
+      alert("Design submitted successfully!");
+    } catch (error) {
+      console.error("Error details:", error);
+      alert("Failed to submit design. Please try again.");
     }
   };
 
@@ -206,23 +273,44 @@ export default function Home() {
             <h3 className="text-2xl font-semibold mb-6 text-gray-900">
               Where should we send your design?
             </h3>
-            <form className="space-y-6">
-              <div>
-                <label
-                  htmlFor="fullName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
-                />
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    required
+                  />
+                </div>
               </div>
               <div>
                 <label
@@ -239,6 +327,7 @@ export default function Home() {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                  required
                 />
               </div>
               <div>

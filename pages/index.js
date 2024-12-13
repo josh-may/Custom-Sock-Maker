@@ -36,16 +36,6 @@ export default function Home() {
         utmTerm: params.get("utm_term") || "",
         utmContent: params.get("utm_content") || "",
       });
-
-      // Debug logging
-      console.log("URL Parameters:", {
-        parent_url: params.get("parent_url"),
-        utm_source: params.get("utm_source"),
-        utm_medium: params.get("utm_medium"),
-        utm_campaign: params.get("utm_campaign"),
-        utm_term: params.get("utm_term"),
-        utm_content: params.get("utm_content"),
-      });
     } catch (error) {
       console.error("Error parsing URL parameters:", error);
       setAttributionData({
@@ -113,7 +103,6 @@ export default function Home() {
         submissionDate: new Date().toISOString(),
         ...attributionData,
       };
-      console.log("zapierData", zapierData);
 
       const response = await fetch("/api/submit-design", {
         method: "POST",

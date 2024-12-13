@@ -12,47 +12,30 @@ export default function Home() {
     lastName: "",
     email: "",
     sockBuilderDesignNotes: "",
-    utm_source: "",
-    utm_medium: "",
-    utm_campaign: "",
-    referrer: "",
+  });
+  const [attributionData, setAttributionData] = React.useState({
+    parentUrl: "",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmTerm: "",
+    utmContent: "",
   });
 
   React.useEffect(() => {
     try {
-      // Get current URL parameters
-      const url = new URL(window.location.href);
-      console.log("url");
-      console.log(url);
+      const params = new URLSearchParams(window.location.search);
 
-      const parentUrl =
-        window.parent !== window ? window.parent.location.href : null;
-
-      // Try to get UTM from current URL first, then fallback to parent URL if available
-      const getUtmParam = (param) => {
-        return (
-          url.searchParams.get(param) ||
-          (parentUrl ? new URL(parentUrl).searchParams.get(param) : "") ||
-          ""
-        );
-      };
-
-      setFormData((prev) => ({
-        ...prev,
-        utm_source: getUtmParam("utm_source"),
-        utm_medium: getUtmParam("utm_medium"),
-        utm_campaign: getUtmParam("utm_campaign"),
-        referrer: document.referrer || "",
-      }));
-
-      // Debug logging
-      console.log("Current URL:", window.location.href);
-      console.log("Parent URL:", parentUrl);
-      console.log("UTM Source:", getUtmParam("utm_source"));
-      console.log("UTM Medium:", getUtmParam("utm_medium"));
-      console.log("UTM Campaign:", getUtmParam("utm_campaign"));
-    } catch (e) {
-      console.log("Unable to access URL parameters:", e);
+      setAttributionData({
+        parentUrl: params.get("parent_url") || "",
+        utmSource: params.get("utm_source") || "",
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || "",
+        utmTerm: params.get("utm_term") || "",
+        utmContent: params.get("utm_content") || "",
+      });
+    } catch (error) {
+      console.error("Error parsing URL parameters:", error);
     }
   }, []);
 
@@ -107,39 +90,31 @@ export default function Home() {
         email: formData.email,
         sockBuilderDesignNotes: formData.sockBuilderDesignNotes,
         selectedImageUrl: sockImages[selectedImage],
-        utm_source: formData.utm_source,
-        utm_medium: formData.utm_medium,
-        utm_campaign: formData.utm_campaign,
-        referrer: formData.referrer,
         submissionDate: new Date().toISOString(),
+        ...attributionData,
       };
-      console.log("zapierData");
-      console.log(zapierData);
+      console.log("zapierData", zapierData);
 
-      // const response = await fetch("/api/submit-design", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(zapierData),
-      // });
+      const response = await fetch("/api/submit-design", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(zapierData),
+      });
 
-      // if (!response.ok) {
-      //   throw new Error("Failed to submit design");
-      // }
+      if (!response.ok) {
+        throw new Error("Failed to submit design");
+      }
 
-      // await response.json();
+      await response.json();
 
-      // setFormData({
-      //   firstName: "",
-      //   lastName: "",
-      //   email: "",
-      //   sockBuilderDesignNotes: "",
-      //   utm_source: "",
-      //   utm_medium: "",
-      //   utm_campaign: "",
-      //   referrer: "",
-      // });
-      // setShowModal(false);
-      // alert("Design submitted successfully!");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        sockBuilderDesignNotes: "",
+      });
+      setShowModal(false);
+      alert("Design submitted successfully!");
     } catch (error) {
       console.error("Error details:", error);
       alert("Failed to submit design. Please try again.");

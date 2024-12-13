@@ -279,7 +279,7 @@ export default function Home() {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
           <div
-            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.6)_30%,rgba(255,255,255,1)_100%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.6)_10%,rgba(255,255,255,0)_50%)]"
             onClick={() => setShowModal(false)}
           ></div>
 

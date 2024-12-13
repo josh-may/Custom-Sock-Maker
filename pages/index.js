@@ -11,7 +11,7 @@ export default function Home() {
     firstName: "",
     lastName: "",
     email: "",
-    notes: "",
+    sockBuilderDesignNotes: "",
     utm_source: "",
     utm_medium: "",
     utm_campaign: "",
@@ -82,7 +82,7 @@ export default function Home() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        notes: formData.notes,
+        sockBuilderDesignNotes: formData.sockBuilderDesignNotes,
         selectedImageUrl: sockImages[selectedImage],
         utm_source: formData.utm_source,
         utm_medium: formData.utm_medium,
@@ -90,31 +90,33 @@ export default function Home() {
         referrer: formData.referrer,
         submissionDate: new Date().toISOString(),
       };
+      console.log("zapierData");
+      console.log(zapierData);
 
-      const response = await fetch("/api/submit-design", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(zapierData),
-      });
+      // const response = await fetch("/api/submit-design", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(zapierData),
+      // });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit design");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Failed to submit design");
+      // }
 
-      await response.json();
+      // await response.json();
 
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        notes: "",
-        utm_source: "",
-        utm_medium: "",
-        utm_campaign: "",
-        referrer: "",
-      });
-      setShowModal(false);
-      alert("Design submitted successfully!");
+      // setFormData({
+      //   firstName: "",
+      //   lastName: "",
+      //   email: "",
+      //   sockBuilderDesignNotes: "",
+      //   utm_source: "",
+      //   utm_medium: "",
+      //   utm_campaign: "",
+      //   referrer: "",
+      // });
+      // setShowModal(false);
+      // alert("Design submitted successfully!");
     } catch (error) {
       console.error("Error details:", error);
       alert("Failed to submit design. Please try again.");
@@ -332,16 +334,19 @@ export default function Home() {
               </div>
               <div>
                 <label
-                  htmlFor="notes"
+                  htmlFor="sockBuilderDesignNotes"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Notes
                 </label>
                 <textarea
-                  id="notes"
-                  value={formData.notes}
+                  id="sockBuilderDesignNotes"
+                  value={formData.sockBuilderDesignNotes}
                   onChange={(e) =>
-                    setFormData({ ...formData, notes: e.target.value })
+                    setFormData({
+                      ...formData,
+                      sockBuilderDesignNotes: e.target.value,
+                    })
                   }
                   rows="3"
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none resize-none text-gray-900"

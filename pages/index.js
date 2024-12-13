@@ -30,9 +30,9 @@ export default function Home() {
 
       setAttributionData({
         parentUrl: currentUrl || window.location.href,
-        utmSource: params.get("utm_source") || "organic",
-        utmMedium: params.get("utm_medium") || "direct",
-        utmCampaign: params.get("utm_campaign") || "none",
+        utmSource: params.get("utm_source") || "",
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || "",
         utmTerm: params.get("utm_term") || "",
         utmContent: params.get("utm_content") || "",
       });
@@ -40,9 +40,9 @@ export default function Home() {
       console.error("Error parsing URL parameters:", error);
       setAttributionData({
         parentUrl: window.location.href,
-        utmSource: "organic",
-        utmMedium: "direct",
-        utmCampaign: "none",
+        utmSource: "",
+        utmMedium: "",
+        utmCampaign: "",
         utmTerm: "",
         utmContent: "",
       });

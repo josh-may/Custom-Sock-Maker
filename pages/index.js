@@ -13,6 +13,7 @@ export default function Home() {
     email: "",
     sockBuilderDesignNotes: "",
   });
+
   const [attributionData, setAttributionData] = React.useState({
     parentUrl: "",
     utmSource: "",
@@ -25,14 +26,25 @@ export default function Home() {
   React.useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
+      const currentUrl = params.get("parent_url");
 
       setAttributionData({
-        parentUrl: params.get("parent_url") || window.location.href,
+        parentUrl: currentUrl || window.location.href,
         utmSource: params.get("utm_source") || "organic",
         utmMedium: params.get("utm_medium") || "direct",
         utmCampaign: params.get("utm_campaign") || "none",
         utmTerm: params.get("utm_term") || "",
         utmContent: params.get("utm_content") || "",
+      });
+
+      // Debug logging
+      console.log("URL Parameters:", {
+        parent_url: params.get("parent_url"),
+        utm_source: params.get("utm_source"),
+        utm_medium: params.get("utm_medium"),
+        utm_campaign: params.get("utm_campaign"),
+        utm_term: params.get("utm_term"),
+        utm_content: params.get("utm_content"),
       });
     } catch (error) {
       console.error("Error parsing URL parameters:", error);

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      "https://hooks.zapier.com/hooks/catch/36623/2sa58vh/",
+      "https://api-na1.hubapi.com/automation/v4/webhook-triggers/4833425/Z3vtm4E",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -23,6 +23,8 @@ export default function Home() {
     utmContent: "",
   });
 
+  const [successMessage, setSuccessMessage] = React.useState("");
+
   React.useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -57,17 +59,17 @@ export default function Home() {
       const prompts = [
         `${prompt}
         
-        Design a technical illustration style mock-up. Light, professional sketch quality on white background.`,
+        Design a technical illustration style sock mock-up. Light, professional sketch quality on white background. if the request isnt related to socks then return a white crew sock.`,
         `${prompt}
         
-        Design a technical illustration style mock-up. Light, professional sketch quality on white background.`,
+        Design a technical illustration style sock mock-up. Light, professional sketch quality on white background. if the request isnt related to socks then return a white crew sock.`,
 
         `${prompt}
         
-        Make a simple sketched mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style.`,
+        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
         `${prompt}
         
-        Make a simple sketched mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style.`,
+        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
       ];
 
       const imagePromises = prompts.map((promptText) =>
@@ -123,10 +125,18 @@ export default function Home() {
         sockBuilderDesignNotes: "",
       });
       setShowModal(false);
-      alert("Design submitted successfully!");
+      setSuccessMessage(
+        "Design submitted successfully! We'll be in touch soon."
+      );
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
     } catch (error) {
       console.error("Error details:", error);
-      alert("Failed to submit design. Please try again.");
+      setSuccessMessage("Failed to submit design. Please try again.");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
     }
   };
 
@@ -189,6 +199,11 @@ export default function Home() {
                     "Generator Design"
                   )}
                 </button>
+                {successMessage && (
+                  <div className="mt-4 p-4 rounded-lg bg-green-50 text-green-700 text-sm animate-fade-in">
+                    {successMessage}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -294,7 +309,7 @@ export default function Home() {
                     htmlFor="firstName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    First Name
+                    First Name*
                   </label>
                   <input
                     type="text"
@@ -312,7 +327,7 @@ export default function Home() {
                     htmlFor="lastName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Last Name
+                    Last Name*
                   </label>
                   <input
                     type="text"
@@ -331,7 +346,7 @@ export default function Home() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Business Email
+                  Business Email*
                 </label>
                 <input
                   type="email"

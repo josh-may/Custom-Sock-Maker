@@ -158,8 +158,8 @@ export default function Home() {
                 className="w-full border-2 border-gray-200 rounded-lg p-4 text-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               />
               <p className="text-sm text-gray-500 italic">
-                Example: &ldquo;Generate a Star Trek custom sock and use the
-                Star Trek logo and colors on the sock.&rdquo;
+                Example: &rdquo;Create a geometric sock design with repeating
+                triangles in autumn colors&rdquo;
               </p>
               <div>
                 <button

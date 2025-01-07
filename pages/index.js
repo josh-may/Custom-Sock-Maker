@@ -145,7 +145,7 @@ export default function Home() {
       <section className="bg-white">
         <main className="max-w-7xl mx-auto px-4 py-5">
           <div className="flex flex-col space-y-8">
-            <div className="max-w-3xl">
+            <div className="max-w-4xl">
               <h1 className="text-3xl font-proxima-nova-bold text-black mb-6">
                 <strong>Create Your Own Socks</strong>
               </h1>

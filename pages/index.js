@@ -147,7 +147,7 @@ export default function Home() {
           <div className="flex flex-col space-y-8">
             <div className="max-w-4xl">
               <h1 className="text-3xl font-proxima-nova-bold text-black mb-6">
-                <strong>Create Your Own Socks</strong>
+                <strong>Custom Sock Builder</strong>
               </h1>
               <p className="text-lg font-proxima-nova text-gray-700">
                 Design your perfect custom socks in seconds. Simply describe

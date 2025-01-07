@@ -146,10 +146,10 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 py-20">
           <div className="flex flex-col space-y-8">
             <div className="max-w-3xl">
-              <h1 className="text-3xl font-bold text-gray-900 mb-6">
-                Customize Your Socks
+              <h1 className="text-3xl font-proxima-nova-bold text-black mb-6">
+                <strong>Customize Your Socks</strong>
               </h1>
-              <p className="text-lg text-gray-700">
+              <p className="text-lg font-proxima-nova text-gray-700">
                 Design your perfect custom socks in seconds. Simply describe
                 your idea, and we&apos;ll help you bring it to life.
               </p>

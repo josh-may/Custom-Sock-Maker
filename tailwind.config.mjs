@@ -11,6 +11,13 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        "proxima-nova": ['"Mark Simonson - Proxima Nova"', "sans-serif"],
+        "proxima-nova-bold": [
+          '"Mark Simonson - Proxima Nova Bold"',
+          "sans-serif",
+        ],
+      },
     },
   },
   plugins: [],

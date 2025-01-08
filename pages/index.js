@@ -24,6 +24,7 @@ export default function Home() {
   });
 
   const [successMessage, setSuccessMessage] = React.useState("");
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     try {
@@ -49,6 +50,17 @@ export default function Home() {
         utmContent: "",
       });
     }
+  }, []);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const generateSockImage = async () => {
@@ -262,10 +274,10 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                   {isLoading ? (
-                    [...Array(4)].map((_, i) => (
+                    [...Array(isMobile ? 1 : 4)].map((_, i) => (
                       <div
                         key={i}
-                        className="aspect-square bg-white rounded-lg border border-gray-200 flex items-center justify-center"
+                        className="aspect-square sm:aspect-[4/5] bg-white rounded-lg border border-gray-200 flex items-center justify-center"
                       >
                         <div className="animate-pulse text-gray-400 text-xs sm:text-sm">
                           Generating...
@@ -273,27 +285,29 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                       </div>
                     ))
                   ) : sockImages.length > 0 ? (
-                    sockImages.map((image, index) => (
-                      <div
-                        key={index}
-                        className={`aspect-[4/5] bg-white rounded-lg relative cursor-pointer transition-all border ${
-                          selectedImage === index
-                            ? "border-red-500 ring-2 ring-red-500"
-                            : "border-gray-200 hover:border-red-400"
-                        }`}
-                        onClick={() => handleSockClick(index)}
-                      >
-                        <Image
-                          src={image}
-                          alt={`Sock design ${index + 1}`}
-                          fill
-                          priority
-                          className="p-2 sm:p-3"
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                          style={{ objectFit: "contain" }}
-                        />
-                      </div>
-                    ))
+                    sockImages
+                      .slice(0, isMobile ? 1 : 4)
+                      .map((image, index) => (
+                        <div
+                          key={index}
+                          className={`aspect-square sm:aspect-[4/5] bg-white rounded-lg relative cursor-pointer transition-all border ${
+                            selectedImage === index
+                              ? "border-red-500 ring-2 ring-red-500"
+                              : "border-gray-200 hover:border-red-400"
+                          }`}
+                          onClick={() => handleSockClick(index)}
+                        >
+                          <Image
+                            src={image}
+                            alt={`Sock design ${index + 1}`}
+                            fill
+                            priority
+                            className="p-2 sm:p-3"
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                            style={{ objectFit: "contain" }}
+                          />
+                        </div>
+                      ))
                   ) : (
                     <div className="col-span-full">
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
@@ -302,23 +316,25 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                           "example2.webp",
                           "example3.webp",
                           "example4.webp",
-                        ].map((image, index) => (
-                          <div
-                            key={index}
-                            className="aspect-[4/5] bg-white rounded-lg relative border border-gray-200"
-                          >
-                            <Image
-                              src={`/${image}`}
-                              alt={`${image
-                                .split(".")[0]
-                                .replace(/-/g, " ")} Socks`}
-                              fill
-                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                              className="p-2 sm:p-3"
-                              style={{ objectFit: "contain" }}
-                            />
-                          </div>
-                        ))}
+                        ]
+                          .slice(0, isMobile ? 1 : 4)
+                          .map((image, index) => (
+                            <div
+                              key={index}
+                              className="aspect-square sm:aspect-[4/5] bg-white rounded-lg relative border border-gray-200"
+                            >
+                              <Image
+                                src={`/${image}`}
+                                alt={`${image
+                                  .split(".")[0]
+                                  .replace(/-/g, " ")} Socks`}
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                                className="p-2 sm:p-3"
+                                style={{ objectFit: "contain" }}
+                              />
+                            </div>
+                          ))}
                       </div>
                     </div>
                   )}

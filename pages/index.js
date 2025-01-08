@@ -57,19 +57,36 @@ export default function Home() {
     setSockImages([]);
     try {
       const prompts = [
-        `${prompt}
-        
-        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
-        `${prompt}
-        
-        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
+        `User prompt:
+${prompt}
 
-        `${prompt}
-        
-        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
-        `${prompt}
-        
-        Make a simple sketched sock mock-up from a 3/4 angle, displayed on a clean white background. Drawn in a casual illustration style. if the request isnt related to socks then return a white crew sock.`,
+Backend Prompt: 
+Using the user prompt above, make a simple sketch, illustration style, 3/4 angle sock mock-up. background white.  
+
+If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+
+        `User prompt:
+${prompt}
+
+Backend Prompt: 
+Using the user prompt above, make a simple sketched, illustration style, 3/4 angle, white background, sock mock-up. 
+
+If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+
+        `User prompt:
+${prompt}
+
+Backend Prompt: 
+Using the user prompt above, make a simple sock mock-up sketch from a 3/4 angle, white background.
+
+If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+        `User prompt:
+${prompt}
+
+Backend Prompt: 
+Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angle. white background. Drawn in a casual illustration style. 
+
+If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
       ];
 
       const imagePromises = prompts.map((promptText) =>
@@ -92,8 +109,29 @@ export default function Home() {
     }
   };
 
+  const handleSockClick = (index) => {
+    setSelectedImage(index);
+    if (formData.firstName && formData.lastName && formData.email) {
+      handleSubmit();
+    } else {
+      setShowModal(true);
+    }
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
+
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.email ||
+      selectedImage === null
+    ) {
+      setSuccessMessage(
+        "Please fill in all required fields and select a design."
+      );
+      return;
+    }
 
     try {
       const zapierData = {
@@ -124,11 +162,11 @@ export default function Home() {
         email: "",
         sockBuilderDesignNotes: "",
       });
-      setShowModal(false);
       setSuccessMessage(
         "Design submitted successfully! We'll be in touch soon."
       );
       setTimeout(() => {
+        setShowModal(false);
         setSuccessMessage("");
       }, 5000);
     } catch (error) {
@@ -162,6 +200,11 @@ export default function Home() {
                       type="text"
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !isLoading && prompt.trim()) {
+                          generateSockImage();
+                        }
+                      }}
                       placeholder=" Create a yellow sock design..."
                       className="flex-1 border-2 border-gray-200 rounded-lg p-4 text-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                     />
@@ -204,16 +247,10 @@ export default function Home() {
                     </button>
                   </div>
                   <p className="text-sm p-1 mt-2 text-gray-500 mt-2 italic">
-                    Example: Make an orange sock design for our company -
-                    Sunrise Corp. Logo details: a half circle of warm orange
-                    rays emanating outward like a rising sun.
+                    Example: Make an orange crew sock for our company
+                    &ldquo;Sunrise Corp&rdquo;. Add a rising sun on the body of
+                    the sock.
                   </p>
-
-                  {successMessage && (
-                    <div className="mt-4 p-4 rounded-lg bg-green-50 text-green-700 text-sm animate-fade-in">
-                      {successMessage}
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -244,10 +281,7 @@ export default function Home() {
                             ? "border-red-500 ring-2 ring-red-500"
                             : "border-gray-200 hover:border-red-400"
                         }`}
-                        onClick={() => {
-                          setSelectedImage(index);
-                          setShowModal(true);
-                        }}
+                        onClick={() => handleSockClick(index)}
                       >
                         <Image
                           src={image}
@@ -306,6 +340,118 @@ export default function Home() {
           </div>
         </main>
       </section>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+          <div
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.6)_10%,rgba(255,255,255,0)_50%)]"
+            onClick={() => setShowModal(false)}
+          ></div>
+
+          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg relative z-10">
+            <h3 className="text-2xl font-semibold mb-6 text-gray-900">
+              Where should we send your design?
+            </h3>
+            {successMessage && (
+              <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+                {successMessage}
+              </div>
+            )}
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    First Name*
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Last Name*
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Business Email*
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="sockBuilderDesignNotes"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Notes
+                </label>
+                <textarea
+                  id="sockBuilderDesignNotes"
+                  value={formData.sockBuilderDesignNotes}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      sockBuilderDesignNotes: e.target.value,
+                    })
+                  }
+                  rows="3"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none resize-none text-gray-900"
+                ></textarea>
+              </div>
+              <div className="flex justify-end space-x-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-2.5 text-sm font-bold rounded-lg border hover:bg-gray-50 transition-colors text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

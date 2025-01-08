@@ -73,32 +73,24 @@ export default function Home() {
 ${prompt}
 
 Backend Prompt: 
-Using the user prompt above, make a simple sketch, illustration style, 3/4 angle sock mock-up. background white.  
-
-If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+Using the user prompt above, make a simple sketch, illustration style, 3/4 angle sock mock-up. background white.`,
 
         `User prompt:
 ${prompt}
 
 Backend Prompt: 
-Using the user prompt above, make a simple sketched, illustration style, 3/4 angle, white background, sock mock-up. 
-
-If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+Using the user prompt above, make a simple sketched, illustration style, 3/4 angle, white background, sock mock-up`,
 
         `User prompt:
 ${prompt}
 
 Backend Prompt: 
-Using the user prompt above, make a simple sock mock-up sketch from a 3/4 angle, white background.
-
-If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+Using the user prompt above, make a simple sock mock-up sketch from a 3/4 angle, white background.`,
         `User prompt:
 ${prompt}
 
 Backend Prompt: 
-Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angle. white background. Drawn in a casual illustration style. 
-
-If the user prompt above isnt related to a sock design than return a sketch of a question mark.`,
+Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angle. white background. Drawn in a casual illustration style.`,
       ];
 
       const imagePromises = prompts.map((promptText) =>

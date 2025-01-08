@@ -181,13 +181,13 @@ If the user prompt above isnt related to a sock design than return a sketch of a
   return (
     <div className="min-h-screen bg-white">
       <section className="bg-white">
-        <main className="max-w-7xl mx-auto px-4 py-5">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col space-y-5">
             <div className="max-w-4xl">
-              <h1 className="text-3xl font-proxima-nova-bold text-black mb-6">
+              <h1 className="text-2xl sm:text-3xl font-proxima-nova-bold text-black mb-4 sm:mb-6">
                 <strong>Custom Sock Builder</strong>
               </h1>
-              <p className="text-lg font-proxima-nova text-gray-700">
+              <p className="text-base sm:text-lg font-proxima-nova text-gray-700">
                 Design your perfect custom socks in seconds. Simply describe
                 your idea, and we&apos;ll help you bring it to life.
               </p>
@@ -195,7 +195,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
             <div className="space-y-4">
               <div className="pb-5">
                 <div className="space-y">
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <input
                       type="text"
                       value={prompt}
@@ -206,16 +206,16 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                         }
                       }}
                       placeholder=" Create a yellow sock design..."
-                      className="flex-1 border-2 border-gray-200 rounded-lg p-4 text-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                      className="flex-1 border-2 border-gray-200 rounded-lg p-3 sm:p-4 text-base sm:text-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                     />
                     <button
                       onClick={generateSockImage}
                       disabled={isLoading || !prompt.trim()}
-                      className={`whitespace-nowrap text-white font-bold py-2 px-6 rounded-lg transition-all ${
+                      className={`whitespace-nowrap text-white font-bold py-3 px-4 sm:py-2 sm:px-6 rounded-lg transition-all w-full sm:w-auto ${
                         isLoading
                           ? "bg-gray-200 cursor-not-allowed"
                           : "bg-red-600 hover:bg-red-700"
-                      } font-bold text-lg`}
+                      } font-bold text-base sm:text-lg`}
                     >
                       {isLoading ? (
                         <span className="flex items-center justify-center space-x-2">
@@ -246,7 +246,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                       )}
                     </button>
                   </div>
-                  <p className="text-sm p-1 mt-2 text-gray-500 mt-2 italic">
+                  <p className="text-xs sm:text-sm p-1 mt-2 text-gray-500 mt-2 italic">
                     Example: Make an orange crew sock for our company
                     &ldquo;Sunrise Corp&rdquo;. Add a rising sun on the body of
                     the sock.
@@ -257,17 +257,17 @@ If the user prompt above isnt related to a sock design than return a sketch of a
               <div className="border-b border-gray-200"></div>
 
               <div className="pt-5">
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                   {sockImages.length > 0 ? "Your Results" : "Design Examples"}
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                   {isLoading ? (
                     [...Array(4)].map((_, i) => (
                       <div
                         key={i}
                         className="aspect-square bg-white rounded-lg border border-gray-200 flex items-center justify-center"
                       >
-                        <div className="animate-pulse text-gray-400 text-sm">
+                        <div className="animate-pulse text-gray-400 text-xs sm:text-sm">
                           Generating...
                         </div>
                       </div>
@@ -288,15 +288,15 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                           alt={`Sock design ${index + 1}`}
                           fill
                           priority
-                          className="p-3"
-                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="p-2 sm:p-3"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
                           style={{ objectFit: "contain" }}
                         />
                       </div>
                     ))
                   ) : (
                     <div className="col-span-full">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                         {[
                           "example1.webp",
                           "example2.webp",
@@ -305,7 +305,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                         ].map((image, index) => (
                           <div
                             key={index}
-                            className="aspect-[4/5] bg-white rounded-lg relative border border-gray-200 "
+                            className="aspect-[4/5] bg-white rounded-lg relative border border-gray-200"
                           >
                             <Image
                               src={`/${image}`}
@@ -313,8 +313,8 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                                 .split(".")[0]
                                 .replace(/-/g, " ")} Socks`}
                               fill
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                              className="p-3"
+                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                              className="p-2 sm:p-3"
                               style={{ objectFit: "contain" }}
                             />
                           </div>
@@ -329,7 +329,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                   </div>
                 )}
                 {sockImages.length > 0 && (
-                  <div className="mt-6 text-sm text-gray-500 italic text-center">
+                  <div className="mt-4 sm:mt-6 text-xs sm:text-sm text-gray-500 italic text-center px-4">
                     Disclaimer: This sock builder is still in beta. We&apos;ll
                     do our best to replicate your design, but the final product
                     may vary slightly from the generated preview.
@@ -347,17 +347,17 @@ If the user prompt above isnt related to a sock design than return a sketch of a
             onClick={() => setShowModal(false)}
           ></div>
 
-          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg relative z-10">
-            <h3 className="text-2xl font-semibold mb-6 text-gray-900">
+          <div className="bg-white rounded-xl p-4 sm:p-8 w-full max-w-md shadow-lg relative z-10 mx-4 sm:mx-0">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-900">
               Where should we send your design?
             </h3>
             {successMessage && (
-              <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-lg">
+              <div className="mb-4 p-3 sm:p-4 bg-green-50 text-green-700 rounded-lg text-sm sm:text-base">
                 {successMessage}
               </div>
             )}
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-4">
+            <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="firstName"
@@ -372,7 +372,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900 text-sm sm:text-base"
                     required
                   />
                 </div>
@@ -390,7 +390,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
                     }
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                    className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900 text-sm sm:text-base"
                     required
                   />
                 </div>
@@ -409,7 +409,7 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900"
+                  className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none text-gray-900 text-sm sm:text-base"
                   required
                 />
               </div>
@@ -430,20 +430,20 @@ If the user prompt above isnt related to a sock design than return a sketch of a
                     })
                   }
                   rows="3"
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none resize-none text-gray-900"
+                  className="w-full px-3 sm:px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 outline-none resize-none text-gray-900 text-sm sm:text-base"
                 ></textarea>
               </div>
-              <div className="flex justify-end space-x-4 pt-2">
+              <div className="flex justify-end space-x-3 sm:space-x-4 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-6 py-2.5 text-sm font-bold rounded-lg border hover:bg-gray-50 transition-colors text-gray-700"
+                  className="px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-bold rounded-lg border hover:bg-gray-50 transition-colors text-gray-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                  className="px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
                 >
                   Submit
                 </button>

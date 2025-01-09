@@ -183,8 +183,8 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="bg-white">
+    <div className="min-h-screen bg-gray-50">
+      <section className="bg-gray-50">
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col space-y-5">
             <div className="max-w-4xl">

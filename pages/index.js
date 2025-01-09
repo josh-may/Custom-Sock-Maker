@@ -261,9 +261,15 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
               <div className="border-b border-gray-200"></div>
 
               <div className="pt-5">
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-3">
                   {sockImages.length > 0 ? "Your Results" : "Design Examples"}
                 </h2>
+                {sockImages.length > 0 && (
+                  <p className="text-base text-gray-700 mb-4">
+                    Click on your preferred design below to submit your custom
+                    sock request.
+                  </p>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                   {isLoading ? (
                     [...Array(isMobile ? 1 : 4)].map((_, i) => (
@@ -331,11 +337,6 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
                     </div>
                   )}
                 </div>
-                {selectedImage !== null && (
-                  <div className="text-center text-gray-600 font-medium mt-4">
-                    Design {selectedImage + 1} selected
-                  </div>
-                )}
                 {sockImages.length > 0 && (
                   <div className="mt-4 sm:mt-6 text-xs sm:text-sm text-gray-500 italic text-center px-4">
                     Disclaimer: This sock builder is still in beta. We&apos;ll
@@ -351,7 +352,7 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
           <div
-            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.6)_8%,rgba(255,255,255,0)_30%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.8)_0%,rgba(0,0,0,0.6)_8%,rgba(255,255,255,0)_40%)]"
             onClick={() => setShowModal(false)}
           ></div>
 

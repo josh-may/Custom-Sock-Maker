@@ -29,6 +29,8 @@ export default function Home() {
   const MAX_GENERATIONS_PER_HOUR = 4;
   const RATE_LIMIT_WINDOW = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
+  const [exampleImages, setExampleImages] = React.useState([]);
+
   React.useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -66,6 +68,12 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  React.useEffect(() => {
+    const allImages = Array.from({ length: 10 }, (_, i) => `e${i + 1}.webp`);
+    const shuffled = allImages.sort(() => Math.random() - 0.5);
+    setExampleImages(shuffled);
+  }, []);
+
   const checkRateLimit = () => {
     const now = Date.now();
     const generations = JSON.parse(
@@ -90,11 +98,9 @@ export default function Home() {
   };
 
   const generateSockImage = async () => {
-    // Check rate limit before proceeding
+    // localhost rate limit
     if (!checkRateLimit()) {
-      setSuccessMessage(
-        `You've exceeded the limit of ${MAX_GENERATIONS_PER_HOUR} generations per hour. Please try again later.`
-      );
+      alert("Rate limit exceeded. Try again later.");
       return;
     }
 
@@ -103,10 +109,10 @@ export default function Home() {
     setSockImages([]);
 
     try {
-      // Add rate limit check on the server side too
+      // server IP rate limit
       const rateCheckResponse = await fetch("/api/check-rate-limit");
       if (!rateCheckResponse.ok) {
-        throw new Error("Rate limit exceeded");
+        alert("Rate limit exceeded. Try again later.");
       }
 
       const prompts = [
@@ -357,12 +363,7 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
                   ) : (
                     <div className="col-span-full">
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                        {[
-                          "example1.webp",
-                          "example2.webp",
-                          "example3.webp",
-                          "example4.webp",
-                        ]
+                        {exampleImages
                           .slice(0, isMobile ? 1 : 4)
                           .map((image, index) => (
                             <div
@@ -371,9 +372,7 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
                             >
                               <Image
                                 src={`/${image}`}
-                                alt={`${image
-                                  .split(".")[0]
-                                  .replace(/-/g, " ")} Socks`}
+                                alt={`Example sock design ${index + 1}`}
                                 fill
                                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
                                 className="p-2 sm:p-3"

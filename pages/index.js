@@ -7,6 +7,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [showModal, setShowModal] = React.useState(false);
+  const [successMessage, setSuccessMessage] = React.useState("");
+  const [isMobile, setIsMobile] = React.useState(false);
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -23,8 +25,9 @@ export default function Home() {
     utmContent: "",
   });
 
-  const [successMessage, setSuccessMessage] = React.useState("");
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [rateLimitExceeded, setRateLimitExceeded] = React.useState(false);
+  const MAX_GENERATIONS_PER_HOUR = 4;
+  const RATE_LIMIT_WINDOW = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
 
   React.useEffect(() => {
     try {
@@ -63,11 +66,49 @@ export default function Home() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const checkRateLimit = () => {
+    const now = Date.now();
+    const generations = JSON.parse(
+      localStorage.getItem("sockGenerations") || "[]"
+    );
+
+    // Remove entries older than the rate limit window
+    const recentGenerations = generations.filter(
+      (timestamp) => now - timestamp < RATE_LIMIT_WINDOW
+    );
+
+    // Check if user has exceeded the limit
+    if (recentGenerations.length >= MAX_GENERATIONS_PER_HOUR) {
+      setRateLimitExceeded(true);
+      return false;
+    }
+
+    // Add new generation timestamp
+    recentGenerations.push(now);
+    localStorage.setItem("sockGenerations", JSON.stringify(recentGenerations));
+    return true;
+  };
+
   const generateSockImage = async () => {
+    // Check rate limit before proceeding
+    if (!checkRateLimit()) {
+      setSuccessMessage(
+        `You've exceeded the limit of ${MAX_GENERATIONS_PER_HOUR} generations per hour. Please try again later.`
+      );
+      return;
+    }
+
     setIsLoading(true);
     setSelectedImage(null);
     setSockImages([]);
+
     try {
+      // Add rate limit check on the server side too
+      const rateCheckResponse = await fetch("/api/check-rate-limit");
+      if (!rateCheckResponse.ok) {
+        throw new Error("Rate limit exceeded");
+      }
+
       const prompts = [
         `User prompt:
 ${prompt}
@@ -108,6 +149,9 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
       setSelectedImage(null);
     } catch (error) {
       console.error("Error generating socks:", error);
+      if (error.message === "Rate limit exceeded") {
+        setSuccessMessage("Too many requests. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -214,14 +258,18 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
                     />
                     <button
                       onClick={generateSockImage}
-                      disabled={isLoading || !prompt.trim()}
+                      disabled={
+                        isLoading || !prompt.trim() || rateLimitExceeded
+                      }
                       className={`whitespace-nowrap text-white font-bold py-3 px-4 sm:py-2 sm:px-6 rounded-lg transition-all w-full sm:w-auto ${
-                        isLoading
+                        isLoading || rateLimitExceeded
                           ? "bg-gray-200 cursor-not-allowed"
                           : "bg-red-600 hover:bg-red-700"
                       } font-bold text-base sm:text-lg`}
                     >
-                      {isLoading ? (
+                      {rateLimitExceeded ? (
+                        "Generation limit reached"
+                      ) : isLoading ? (
                         <span className="flex items-center justify-center space-x-2">
                           <svg
                             className="animate-spin h-5 w-5 text-white"

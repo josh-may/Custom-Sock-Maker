@@ -18,40 +18,40 @@ export default function Home() {
     sockBuilderDesignNotes: "",
   });
 
-  // const [attributionData, setAttributionData] = React.useState({
-  //   parentUrl: "",
-  //   utmSource: "",
-  //   utmMedium: "",
-  //   utmCampaign: "",
-  //   utmTerm: "",
-  //   utmContent: "",
-  // });
+  const [attributionData, setAttributionData] = React.useState({
+    parentUrl: "",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmTerm: "",
+    utmContent: "",
+  });
 
-  // React.useEffect(() => {
-  //   try {
-  //     const params = new URLSearchParams(window.location.search);
-  //     const currentUrl = params.get("parent_url");
+  React.useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const currentUrl = params.get("parent_url");
 
-  //     setAttributionData({
-  //       parentUrl: currentUrl || window.location.href,
-  //       utmSource: params.get("utm_source") || "",
-  //       utmMedium: params.get("utm_medium") || "",
-  //       utmCampaign: params.get("utm_campaign") || "",
-  //       utmTerm: params.get("utm_term") || "",
-  //       utmContent: params.get("utm_content") || "",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error parsing URL parameters:", error);
-  //     setAttributionData({
-  //       parentUrl: window.location.href,
-  //       utmSource: "",
-  //       utmMedium: "",
-  //       utmCampaign: "",
-  //       utmTerm: "",
-  //       utmContent: "",
-  //     });
-  //   }
-  // }, []);
+      setAttributionData({
+        parentUrl: currentUrl || window.location.href,
+        utmSource: params.get("utm_source") || "",
+        utmMedium: params.get("utm_medium") || "",
+        utmCampaign: params.get("utm_campaign") || "",
+        utmTerm: params.get("utm_term") || "",
+        utmContent: params.get("utm_content") || "",
+      });
+    } catch (error) {
+      console.error("Error parsing URL parameters:", error);
+      setAttributionData({
+        parentUrl: window.location.href,
+        utmSource: "",
+        utmMedium: "",
+        utmCampaign: "",
+        utmTerm: "",
+        utmContent: "",
+      });
+    }
+  }, []);
 
   const [rateLimitExceeded, setRateLimitExceeded] = React.useState(false);
   const MAX_GENERATIONS_PER_HOUR = 4;

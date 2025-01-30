@@ -9,6 +9,8 @@ export default function Home() {
   const [showModal, setShowModal] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState("");
   const [isMobile, setIsMobile] = React.useState(false);
+  const [exampleImages, setExampleImages] = React.useState([]);
+
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -16,46 +18,44 @@ export default function Home() {
     sockBuilderDesignNotes: "",
   });
 
-  const [attributionData, setAttributionData] = React.useState({
-    parentUrl: "",
-    utmSource: "",
-    utmMedium: "",
-    utmCampaign: "",
-    utmTerm: "",
-    utmContent: "",
-  });
+  // const [attributionData, setAttributionData] = React.useState({
+  //   parentUrl: "",
+  //   utmSource: "",
+  //   utmMedium: "",
+  //   utmCampaign: "",
+  //   utmTerm: "",
+  //   utmContent: "",
+  // });
+
+  // React.useEffect(() => {
+  //   try {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const currentUrl = params.get("parent_url");
+
+  //     setAttributionData({
+  //       parentUrl: currentUrl || window.location.href,
+  //       utmSource: params.get("utm_source") || "",
+  //       utmMedium: params.get("utm_medium") || "",
+  //       utmCampaign: params.get("utm_campaign") || "",
+  //       utmTerm: params.get("utm_term") || "",
+  //       utmContent: params.get("utm_content") || "",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error parsing URL parameters:", error);
+  //     setAttributionData({
+  //       parentUrl: window.location.href,
+  //       utmSource: "",
+  //       utmMedium: "",
+  //       utmCampaign: "",
+  //       utmTerm: "",
+  //       utmContent: "",
+  //     });
+  //   }
+  // }, []);
 
   const [rateLimitExceeded, setRateLimitExceeded] = React.useState(false);
   const MAX_GENERATIONS_PER_HOUR = 4;
-  const RATE_LIMIT_WINDOW = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
-
-  const [exampleImages, setExampleImages] = React.useState([]);
-
-  React.useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const currentUrl = params.get("parent_url");
-
-      setAttributionData({
-        parentUrl: currentUrl || window.location.href,
-        utmSource: params.get("utm_source") || "",
-        utmMedium: params.get("utm_medium") || "",
-        utmCampaign: params.get("utm_campaign") || "",
-        utmTerm: params.get("utm_term") || "",
-        utmContent: params.get("utm_content") || "",
-      });
-    } catch (error) {
-      console.error("Error parsing URL parameters:", error);
-      setAttributionData({
-        parentUrl: window.location.href,
-        utmSource: "",
-        utmMedium: "",
-        utmCampaign: "",
-        utmTerm: "",
-        utmContent: "",
-      });
-    }
-  }, []);
+  const RATE_LIMIT_WINDOW = 3 * 60 * 60 * 1000;
 
   React.useEffect(() => {
     const checkMobile = () => {
@@ -80,25 +80,21 @@ export default function Home() {
       localStorage.getItem("sockGenerations") || "[]"
     );
 
-    // Remove entries older than the rate limit window
     const recentGenerations = generations.filter(
       (timestamp) => now - timestamp < RATE_LIMIT_WINDOW
     );
 
-    // Check if user has exceeded the limit
     if (recentGenerations.length >= MAX_GENERATIONS_PER_HOUR) {
       setRateLimitExceeded(true);
       return false;
     }
 
-    // Add new generation timestamp
     recentGenerations.push(now);
     localStorage.setItem("sockGenerations", JSON.stringify(recentGenerations));
     return true;
   };
 
   const generateSockImage = async () => {
-    // localhost rate limit
     if (!checkRateLimit()) {
       alert("Rate limit exceeded. Try again later.");
       return;

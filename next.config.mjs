@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["oaidalleapiprodscus.blob.core.windows.net", "fal.media"],
+    domains: [
+      "oaidalleapiprodscus.blob.core.windows.net",
+      "fal.media",
+      "v3.fal.media",
+    ],
   },
 };
 

@@ -115,7 +115,6 @@ export default function Home() {
     setSockImages([]);
 
     try {
-      // server IP rate limit
       const rateCheckResponse = await fetch("/api/check-rate-limit");
       if (!rateCheckResponse.ok) {
         alert("Rate limit exceeded. Try again later.");
@@ -172,7 +171,6 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
   const handleSockClick = (index) => {
     setSelectedImage(index);
 
-    // Track the sock click event with PostHog
     posthog.capture("sock_design_selected", {
       designIndex: index,
       designUrl: sockImages[index],
@@ -203,7 +201,6 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
     }
 
     try {
-      // Identify the user in PostHog
       posthog.identify(formData.email, {
         email: formData.email,
         firstName: formData.firstName,
@@ -211,7 +208,6 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
         $name: `${formData.firstName} ${formData.lastName}`,
       });
 
-      // Track form submission with PostHog
       posthog.capture("sock_design_submitted", {
         designIndex: selectedImage,
         designUrl: sockImages[selectedImage],
@@ -233,7 +229,6 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
         ...attributionData,
       };
 
-      // Add console logs for debugging
       console.log("PostHog Event Sent:", {
         event: "sock_design_submitted",
         properties: {

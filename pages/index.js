@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import posthog from "posthog-js";
 
 export default function Home() {
   const [prompt, setPrompt] = React.useState("");
@@ -72,6 +73,15 @@ export default function Home() {
     const allImages = Array.from({ length: 10 }, (_, i) => `e${i + 1}.webp`);
     const shuffled = allImages.sort(() => Math.random() - 0.5);
     setExampleImages(shuffled);
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+        api_host:
+          process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+      });
+    }
   }, []);
 
   const checkRateLimit = () => {
@@ -161,6 +171,15 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
 
   const handleSockClick = (index) => {
     setSelectedImage(index);
+
+    // Track the sock click event with PostHog
+    posthog.capture("sock_design_selected", {
+      designIndex: index,
+      designUrl: sockImages[index],
+      prompt: prompt,
+      ...attributionData,
+    });
+
     if (formData.firstName && formData.lastName && formData.email) {
       handleSubmit();
     } else {
@@ -184,6 +203,26 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
     }
 
     try {
+      // Identify the user in PostHog
+      posthog.identify(formData.email, {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        $name: `${formData.firstName} ${formData.lastName}`,
+      });
+
+      // Track form submission with PostHog
+      posthog.capture("sock_design_submitted", {
+        designIndex: selectedImage,
+        designUrl: sockImages[selectedImage],
+        prompt: prompt,
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        sockBuilderDesignNotes: formData.sockBuilderDesignNotes,
+        ...attributionData,
+      });
+
       const zapierData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -193,6 +232,18 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
         submissionDate: new Date().toISOString(),
         ...attributionData,
       };
+
+      // Add console logs for debugging
+      console.log("PostHog Event Sent:", {
+        event: "sock_design_submitted",
+        properties: {
+          designIndex: selectedImage,
+          designUrl: sockImages[selectedImage],
+          prompt: prompt,
+          email: formData.email,
+          ...attributionData,
+        },
+      });
 
       const response = await fetch("/api/submit-design", {
         method: "POST",

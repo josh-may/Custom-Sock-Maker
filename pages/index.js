@@ -281,7 +281,7 @@ Using the user prompt above, make a simple sketched sock mock-up from a 3/4 angl
           <div className="flex flex-col space-y-5 mt-10">
             <div className="max-w-4xl">
               <h1 className="text-2xl sm:text-3xl font-proxima-nova-bold text-black mb-4 sm:mb-6">
-                <strong>Custom Sock Builder</strong>
+                <strong>Custom Sock Maker</strong>
               </h1>
               <p className="text-base sm:text-lg font-proxima-nova text-gray-700">
                 Design your perfect custom socks in seconds. Simply describe

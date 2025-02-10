@@ -33,7 +33,7 @@ Design and order custom-made socks for any occasion with our intuitive online so
 
 ## 🚀 Getting Started
 
-Visit our [online design tool](https://your-website.com) to begin creating your custom socks.
+Visit our [online design tool](https://www.customsockmaker.com/) to begin creating your custom socks.
 
 ## 📱 Compatible Platforms
 
@@ -46,19 +46,6 @@ Visit our [online design tool](https://your-website.com) to begin creating your 
 Need help with your design? Our team is here to assist:
 
 - Email: support@customsockmaker.com
-- Live Chat: Available Monday-Friday, 9am-5pm EST
-- Phone: 1-800-SOCKS
-
-## 📦 Shipping Information
-
-- Free shipping on orders over $100
-- Ships worldwide
-- Express shipping available
-- Bulk order discounts
-
-## 🔒 Quality Guarantee
-
-We stand behind our products with a 100% satisfaction guarantee. If you're not happy with your custom socks, we'll make it right.
 
 ## 📄 License
 
